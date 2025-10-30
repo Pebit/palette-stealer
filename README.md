@@ -24,6 +24,10 @@ cd palette-stealer
 ```
 Install dependencies:
 
+```bash
+pip install numpy opencv-python matplotlib
+```
+
 ## Usage
 
 Place your images inside:
@@ -44,7 +48,7 @@ After you run the program you're prompted to:
 - choose the maximum colors inside the palette (choose a number bigger than hight*width of the palette image if you want to use all the colors found)
 - you're done, wait as the image is remapped chunk by chunk
 
-<img width="20%" alt="image" src="https://github.com/user-attachments/assets/33d29781-0a2c-4544-ab9b-e4a438a0f7be" />
+<img width="524" height="177" alt="image" src="https://github.com/user-attachments/assets/063b69d4-cdd0-4688-9002-8964f67f8c88" />
 
 
 The in-program usage is probably going to change but there will be very explicit prints at runtime.
