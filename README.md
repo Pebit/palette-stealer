@@ -44,7 +44,7 @@ python run_program.py
 After you run the program you're prompted to:
 
 - choose the images by their index inside the folder
-- choose the maximum size of the image (choose a number equal or bigger than the image's hight/width if you want to keep the same resolution)
+- choose the maximum size of the image (choose a number equal or bigger than the image's maximum dimension, hight or width, if you want to keep the same resolution)
 - choose the maximum colors inside the palette (choose a number bigger than hight*width of the palette image if you want to use all the colors found)
 - you're done, wait as the image is remapped chunk by chunk
 
