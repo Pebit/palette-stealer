@@ -2,7 +2,7 @@
 
 A Python tool that extracts color palettes from images and remaps other images using those palettes.
 
-<img width="50%" alt="image" src="https://github.com/user-attachments/assets/d059d546-78a5-4468-b632-d4103e095732" />
+<img width="65%" alt="image" src="https://github.com/user-attachments/assets/d059d546-78a5-4468-b632-d4103e095732" />
 
 600x600 px image with 9999 different color samples
 
@@ -57,13 +57,13 @@ The in-program usage is probably going to change but there will be very explicit
 
 <img src="https://github.com/user-attachments/assets/2db2427c-6871-49ed-9f76-e358889c1193"
        alt="discord_example"
-       width="50%">
+       width="65%">
        
 matching your profile picture with your banner
 
 <img src="https://github.com/user-attachments/assets/d4ed51f7-3166-4ae3-adda-d702216468bc"
        alt="EXAMPLE1"
-       width="50%">
+       width="65%">
        
 matching your app icons to your background image
 
