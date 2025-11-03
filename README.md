@@ -56,12 +56,11 @@ The in-program usage is probably going to change but there will be very explicit
 ## Example Usage
 
 
-<p align="center">
+
    <img src="https://github.com/user-attachments/assets/d4ed51f7-3166-4ae3-adda-d702216468bc"
        alt="EXAMPLE1"
        width="49%">
   <img src="https://github.com/user-attachments/assets/2db2427c-6871-49ed-9f76-e358889c1193"
        alt="discord_example"
        width="49%">
-</p>
 
