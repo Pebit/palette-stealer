@@ -65,5 +65,5 @@ matching your profile picture with your banner
        alt="EXAMPLE1"
        width="90%">
        
-matching your apps to your background image
+matching your app icons to your background image
 
