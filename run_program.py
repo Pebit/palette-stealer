@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from helper_functions import *
-from datetime import datetime
 
 original_dir_path = "images_to_edit/"
 pallette_dir_path = "palette_images/"
@@ -12,7 +11,7 @@ output_dir = "result_images"
 FULL_DIMENSIONS = 99999999999999
 choose_dimensions = True
 
-timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
 
 while True:
     # choosing images
@@ -40,8 +39,7 @@ while True:
     plt_show_four_images_square(original_image, palette_image, palette_square_padded(palette), palletized_image)
 
     # save image in output folder
-    os.makedirs(output_dir, exist_ok=True)
-    cv.imwrite(os.path.join(output_dir, f"{timestamp}_palletized.png"), cv.cvtColor(palletized_image, cv.COLOR_RGB2BGR))
+    save_image(palletized_image, output_dir)
 
     continue_ = input(f"q to quit")
     if continue_.lower() == "q" or continue_.lower() == "quit":

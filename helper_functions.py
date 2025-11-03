@@ -1,10 +1,10 @@
 import math
-
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
 import os
 import time
+from datetime import datetime
 
 def is_supported_image(filename: str) -> bool:
     valid_extensions = ['.png', '.jpg', '.jpeg', '.bmp', '.tiff', '.tif', '.gif', '.ppm', '.pgm', '.pbm', '.webp']
@@ -16,15 +16,15 @@ def choose_image(dir_path: str, image_list: [str]) -> str:
     for i in range(1, len(image_list) + 1):
         print(f"{i}. {image_list[i - 1]}")
     while True:
-        image_index = input("* choose an image index from the list above\n")
+        image_index = input("> choose an image index from the list above\n")
         try:
             image_index = int(image_index) - 1
             if 0 <= image_index < len(image_list):
                 break
             else:
-                print("! index out of bounds !")
+                print("> index out of bounds !!")
         except ValueError:
-            print("! not a valid number !")
+            print("> not a valid number !!")
     return dir_path + image_list[image_index]
 
 
@@ -50,15 +50,15 @@ def choose_images(original_images_dir: str, palette_images_dir: str) -> (str, st
 
 def choose_max_dimensions(name: str = "the image") -> int:
     while True:
-        max_dim = input(f"* choose max dimension for {name}\n")
+        max_dim = input(f"> choose max dimension for {name}\n")
         try:
             max_dim = int(max_dim)
             if max_dim > 0:
                 return max_dim
             else:
-                print("! dimensions must equal or greater than 1 !")
+                print("> dimensions must equal or greater than 1 !!")
         except ValueError:
-            print("! not a valid number !")
+            print("> not a valid number !!")
 
 
 def fitted_image(image: np.ndarray, max_dimension: int, interpolation_method=cv.INTER_NEAREST) -> np.ndarray:
@@ -212,4 +212,12 @@ def palletized(image_rgb: np.ndarray, palette_rgb: np.ndarray, chunk: int = 1_00
 
     out = palette_rgb[out_index].reshape(image_rgb.shape).astype(np.uint8)
     return out
+
+
+def save_image(img: np.ndarray, output_dir: str) -> None:
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    os.makedirs(output_dir, exist_ok=True)
+    cv.imwrite(os.path.join(output_dir, f"{timestamp}_palletized.png"), cv.cvtColor(img, cv.COLOR_RGB2BGR))
+    print("> image saved sucessfuly")
+
 # img = cv.resize(img, (new_w, new_h), interpolation=cv.INTER_NEAREST)
