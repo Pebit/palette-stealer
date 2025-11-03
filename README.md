@@ -64,5 +64,8 @@ matching your profile picture with your banner
        alt="EXAMPLE1"
        width="100%">
        
-matching your app icons to your background image
+matching your app icons to your background image 
+
+*the other image processing I mentioned was done on another image editing software! 
+The app <b>DOES NOT</b> have the following features: desaturation control, contrast control, inverting colors. 
 
