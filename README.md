@@ -60,10 +60,9 @@ The in-program usage might change but there will be very explicit prints at runt
        width="65%">
        
 matching your profile picture with your banner
-
-<img src="https://github.com/user-attachments/assets/d4ed51f7-3166-4ae3-adda-d702216468bc"
+<img src="https://github.com/user-attachments/assets/0cacd761-c190-4c08-aac5-b60958b833b4"
        alt="EXAMPLE1"
-       width="65%">
+       width="100%">
        
 matching your app icons to your background image
 
