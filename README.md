@@ -55,7 +55,7 @@ The in-program usage might change but there will be very explicit prints at runt
 
 ## Example Usage
 
-<img src="https://github.com/user-attachments/assets/2db2427c-6871-49ed-9f76-e358889c1193"
+<img src="https://github.com/user-attachments/assets/94de9471-4b21-43df-8820-8e215d901521"
        alt="discord_example"
        width="65%">
        
