@@ -51,7 +51,7 @@ After you run the program you're prompted to:
 <img width="524" height="177" alt="image" src="https://github.com/user-attachments/assets/063b69d4-cdd0-4688-9002-8964f67f8c88" />
 
 
-The in-program usage is probably going to change but there will be very explicit prints at runtime.
+The in-program usage might change but there will be very explicit prints at runtime to guide the user.
 
 ## Example Usage
 
