@@ -2,7 +2,7 @@
 
 A Python tool that extracts color palettes from images and remaps other images using those palettes.
 
-<img width="50%" alt="image" src="https://github.com/user-attachments/assets/d059d546-78a5-4468-b632-d4103e095732" />
+<img width="65%" alt="image" src="https://github.com/user-attachments/assets/d059d546-78a5-4468-b632-d4103e095732" />
 
 600x600 px image with 9999 different color samples
 
@@ -51,19 +51,25 @@ After you run the program you're prompted to:
 <img width="524" height="177" alt="image" src="https://github.com/user-attachments/assets/063b69d4-cdd0-4688-9002-8964f67f8c88" />
 
 
-The in-program usage is probably going to change but there will be very explicit prints at runtime.
+The in-program usage might change but there will be very explicit prints at runtime to guide the user.
 
 ## Example Usage
 
-<img src="https://github.com/user-attachments/assets/2db2427c-6871-49ed-9f76-e358889c1193"
+<img src="https://github.com/user-attachments/assets/94de9471-4b21-43df-8820-8e215d901521"
        alt="discord_example"
-       width="50%">
+       width="65%">
        
 matching your profile picture with your banner
-
-<img src="https://github.com/user-attachments/assets/d4ed51f7-3166-4ae3-adda-d702216468bc"
+<img src="https://github.com/user-attachments/assets/0cacd761-c190-4c08-aac5-b60958b833b4"
        alt="EXAMPLE1"
-       width="50%">
+       width="100%">
        
-matching your app icons to your background image
+matching your app icons to your background image 
 
+*the other image processing I mentioned was done on another image editing software! 
+
+The app <b>DOES NOT</b> have the following features: desaturation control, contrast control, inverting colors. 
+
+## Future Plans !!!
+- Learn and understand more about KDTrees for huge code optimisation (100x faster for 1000px palettes - complexity from O(n) to O(log2n))
+- impement dithering for better looking images
