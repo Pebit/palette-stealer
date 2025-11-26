@@ -70,3 +70,6 @@ matching your app icons to your background image
 
 The app <b>DOES NOT</b> have the following features: desaturation control, contrast control, inverting colors. 
 
+## Future Plans !!!
+- Learn and understand more about KDTrees for huge code optimisation (100x faster for 1000px palettes - complexity from O(n) to O(log2n) )
+- impement dithering for better looking images
