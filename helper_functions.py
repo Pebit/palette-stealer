@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import os
 import time
 from datetime import datetime
+from scipy.spatial import cKDTree
+
 
 def is_supported_image(filename: str) -> bool:
     valid_extensions = ['.png', '.jpg', '.jpeg', '.bmp', '.tiff', '.tif', '.gif', '.ppm', '.pgm', '.pbm', '.webp']
@@ -22,9 +24,9 @@ def choose_image(dir_path: str, image_list: [str]) -> str:
             if 0 <= image_index < len(image_list):
                 break
             else:
-                print("> index out of bounds !!")
+                print(">> index out of bounds !!")
         except ValueError:
-            print("> not a valid number !!")
+            print(">> not a valid number !!")
     return dir_path + image_list[image_index]
 
 
@@ -56,9 +58,9 @@ def choose_max_dimensions(name: str = "the image") -> int:
             if max_dim > 0:
                 return max_dim
             else:
-                print("> dimensions must equal or greater than 1 !!")
+                print(">> dimensions must equal or greater than 1 !!")
         except ValueError:
-            print("> not a valid number !!")
+            print(">> not a valid number !!")
 
 
 def fitted_image(image: np.ndarray, max_dimension: int, interpolation_method=cv.INTER_NEAREST) -> np.ndarray:
@@ -107,33 +109,47 @@ def read_image_rgb(image_path: str, background: tuple[int, int, int] | str | Non
     raise ValueError(f"unsupported channel layout: shape={img.shape}")
 
 
-def plt_show_image(image: np.array) -> None:
+def plt_show_image(image: np.ndarray) -> None:
     plt.imshow(image)
     plt.show()
 
 
-def plt_show_two_images(image1: np.array, image2: np.array) -> None:
-    fig, axs = plt.subplots(1, 2, figsize=(20, 10))
-    axs[0].imshow(image1)
-    axs[1].imshow(image2)
-    plt.tight_layout()
+def plt_show_images_line(images: [np.ndarray], adjusted: bool = False) -> None:
+    number_of_images = len(images)
+    print()
+    fig, axs = plt.subplots(1, number_of_images, figsize=(40 / number_of_images, 20 / number_of_images))
+    for i in range(number_of_images):
+        axs[i].imshow(images[i])
+        axs[i].axis('off')
+    if adjusted:
+        fig.subplots_adjust(
+            left=0.004,
+            right=0.996,
+            bottom=0.038,
+            top=1,
+            wspace=0.103,
+            hspace=0.2
+        )
+    else:
+        plt.tight_layout()
     plt.show()
 
 
-def plt_show_three_images_horisontal(image1: np.array, image2: np.array, image3: np.array) -> None:
-    fig, axs = plt.subplots(1, 3, figsize=(20, 10))
-    axs[0].imshow(image1)
-    axs[1].imshow(image2)
-    axs[2].imshow(image3)
-    plt.tight_layout()
-    plt.show()
+def plt_show_images_square(images: [np.ndarray]) -> None:
+    number_of_images = len(images)
+    dim = math.isqrt(number_of_images)
+    if dim ** 2 < number_of_images:
+        dim += 1
+    fig, axs = plt.subplots(dim, dim, figsize=(40 / number_of_images, 20 / number_of_images))
+    for i in range(dim):
+        for j in range(dim):
+            if i * dim + j >= number_of_images:
+                axs[i, j].imshow(np.full_like(images[0], 255))
+                axs[i, j].axis('off')
+                continue
+            axs[i, j].imshow(images[i * dim + j])
+            axs[i, j].axis('off')
 
-
-def plt_show_three_images_vertical(image1: np.array, image2: np.array, image3: np.array) -> None:
-    fig, axs = plt.subplots(3, 1, figsize=(20, 10))
-    axs[0].imshow(image1)
-    axs[1].imshow(image2)
-    axs[2].imshow(image3)
     plt.tight_layout()
     plt.show()
 
@@ -141,9 +157,13 @@ def plt_show_three_images_vertical(image1: np.array, image2: np.array, image3: n
 def plt_show_four_images_square(image1: np.array, image2: np.array, image3: np.array, image4: np.array) -> None:
     fig, axs = plt.subplots(2, 2, figsize=(20, 10))
     axs[0, 0].imshow(image1)
+    axs[0, 0].axis('off')
     axs[0, 1].imshow(image2)
+    axs[0, 1].axis('off')
     axs[1, 0].imshow(image3)
+    axs[1, 0].axis('off')
     axs[1, 1].imshow(image4)
+    axs[1, 1].axis('off')
     plt.tight_layout()
     plt.show()
 
@@ -155,6 +175,7 @@ def palette_square_padded(palette: np.ndarray, fill: (int, int, int) = (255, 255
     out = np.full((total, 3), fill, dtype=palette.dtype)
     out[:n] = palette
     img = out.reshape(s, s, 3)
+    img.sort(axis=1)
     return img
 
 
@@ -170,15 +191,13 @@ def image_to_palette(image_rgb: np.array, max_dim) -> np.ndarray:
     reduced_palette = palette[indices]
     return reduced_palette
 
+
 def seconds_to_minutes(seconds: float | int) -> float | int:
     return math.floor(seconds/60)
-
 def minutes_to_hours(minutes: float | int) -> float | int:
     return math.floor(minutes/60)
-
 def hours_to_days(hours: float | int) -> float | int:
     return math.floor(hours/24)
-
 def estimated_time_dhms(seconds:float) -> (int, int, int, float):
     total_minutes = seconds_to_minutes(seconds)
     seconds = seconds - total_minutes * 60
@@ -187,14 +206,25 @@ def estimated_time_dhms(seconds:float) -> (int, int, int, float):
     days = int(hours_to_days(total_hours))
     hours = int(total_hours - days * 24)
     return days, hours, minutes, seconds
-def palletized(image_rgb: np.ndarray, palette_rgb: np.ndarray, chunk: int = 1_000) -> np.ndarray:
 
-    image_lab_flat = cv.cvtColor(image_rgb.astype(np.uint8), cv.COLOR_RGB2LAB).reshape(-1, 3)
-    palette_lab = cv.cvtColor(palette_rgb[np.newaxis, :, :].astype(np.uint8), cv.COLOR_RGB2LAB)[0]
 
+def rgb_to_colorspace(image_rgb, colorspace: int | None = None):
+    if colorspace:
+        image_space = cv.cvtColor(image_rgb.astype(np.uint8), colorspace)
+    else:
+        image_space = image_rgb
+    return image_space
+
+
+def palletized_colorspace(image_rgb: np.ndarray, palette_rgb: np.ndarray, chunk: int = 1_000,
+                          colorspace: int | None = None, w0: float = 1, w1: float = 1, w2: float = 1) -> np.ndarray:
+    image_space = rgb_to_colorspace(image_rgb, colorspace)
+    palette_space = rgb_to_colorspace(palette_rgb[np.newaxis, :, :].astype(np.uint8), colorspace)[0]
+
+    image_space_flat = image_space.reshape(-1, 3)
     # we cast to uint16 to avoid uint8 wraparound on subtraction
-    palette_lab_16 = palette_lab.astype(np.int16)
-    image_flat_length = image_lab_flat.shape[0]
+    palette_space_16 = palette_space.astype(np.int16)
+    image_flat_length = image_space_flat.shape[0]
     out_index = np.empty(image_flat_length, dtype=np.int32)  # int32 for square int16 values (avoiding wraparound)
 
     number_of_chunks = int(image_flat_length / chunk) if image_flat_length % chunk == 0 else int(image_flat_length / chunk) + 1
@@ -202,9 +232,12 @@ def palletized(image_rgb: np.ndarray, palette_rgb: np.ndarray, chunk: int = 1_00
         start = time.time()
         chunk_end = min(chunk_start + chunk, image_flat_length)
         print(f"chunk {int(chunk_start / chunk) + 1}/{number_of_chunks} (pixels {chunk_start}:{chunk_end})")
-        block = image_lab_flat[chunk_start:chunk_end].astype(np.int16)
-        diffs = block[:, None, :] - palette_lab_16[None, :, :]
-        dist2 = (diffs.astype(np.int32) * diffs.astype(np.int32)).sum(axis=2)
+        block = image_space_flat[chunk_start:chunk_end].astype(np.int16)
+        diffs = block[:, None, :] - palette_space_16[None, :, :]
+        diffs = diffs.astype(np.int32)
+        dist2 = ((diffs[:, :, 0] * w0) ** 2
+                 + (diffs[:, :, 1] * w1) ** 2
+                 + (diffs[:, :, 2] * w2) ** 2)
         out_index[chunk_start:chunk_end] = dist2.argmin(axis=1)
         end = time.time()
         days_remaining, hours_remaining, minutes_remaining, seconds_remaining = estimated_time_dhms((end - start) * (number_of_chunks - int(chunk_start / chunk) + 1))
@@ -220,4 +253,23 @@ def save_image(img: np.ndarray, output_dir: str) -> None:
     cv.imwrite(os.path.join(output_dir, f"{timestamp}_palletized.png"), cv.cvtColor(img, cv.COLOR_RGB2BGR))
     print("> image saved sucessfuly")
 
-# img = cv.resize(img, (new_w, new_h), interpolation=cv.INTER_NEAREST)
+
+def palletized_colorspace_fast(image_rgb: np.ndarray, palette_rgb: np.ndarray, colorspace: int | None = None,
+                               w0: float = 1, w1: float = 1, w2: float = 1):
+    image_space = rgb_to_colorspace(image_rgb, colorspace).astype(np.float32)
+    palette_space = rgb_to_colorspace(palette_rgb[np.newaxis, :, :].astype(np.uint8), colorspace)[0].astype(np.float32)
+
+    weights = np.array([w0, w1, w2], dtype=np.float32)
+    image_weighted = image_space * weights
+    palette_weighted = palette_space * weights
+
+    h, w, c = image_weighted.shape
+    image_flat = image_weighted.reshape(-1, 3)
+
+    palette_tree = cKDTree(palette_weighted)
+    _, indices = palette_tree.query(image_flat, k=1)
+
+    out = palette_rgb[indices].reshape(h, w, 3).astype(np.uint8)
+    return out
+
+
