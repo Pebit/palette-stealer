@@ -2,11 +2,9 @@
 
 A Python tool that extracts color palettes from images and remaps other images using those palettes.
 
-<img width="65%" alt="image" src="https://github.com/user-attachments/assets/d059d546-78a5-4468-b632-d4103e095732" />
-
 <img width="65%" alt="image" src="https://github.com/user-attachments/assets/8a34c6df-f8c8-47d4-b732-3ab6949fff04" />
 
-600x600 px image with 9999 different color samples
+1088x1088 px image with 15125 different color samples
 
 ## Features
 
