@@ -9,6 +9,7 @@ A Python tool that extracts color palettes from images and remaps other images u
 5.18 seconds 
 
 Another example:
+
 <img width="65%" alt="image" src="https://github.com/user-attachments/assets/7fbf2b57-b429-461e-87d5-f96f1c2c0c29" /> 
 
 ## Features
