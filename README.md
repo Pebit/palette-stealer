@@ -62,11 +62,13 @@ The in-program usage might change but there will be very explicit prints at runt
 ## Example Usage
 
 matching your profile picture with your banner
+
 <img src="https://github.com/user-attachments/assets/94de9471-4b21-43df-8820-8e215d901521"
        alt="discord_example"
        width="65%">
        
 matching your app icons to your background image 
+
 <img src="https://github.com/user-attachments/assets/0cacd761-c190-4c08-aac5-b60958b833b4"
        alt="EXAMPLE1"
        width="100%">
