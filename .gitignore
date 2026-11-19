@@ -35,3 +35,16 @@ Thumbs.db
 
 # --- Virtual environments ---
 .env
+
+# --- PyInstaller / Build ---
+build/
+dist/
+*.spec
+
+# --- Auto-generated app configs ---
+weight_presets.json
+ui_themes.json
+
+# --- Local AI guidelines ---
+GEMINI.md
+
